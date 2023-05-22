@@ -103,7 +103,7 @@ export EDITOR='nano'
 
 # - Custom stuff -
 
-DEFAULT_USER="steeven"
+DEFAULT_USER=$(whoami)
 
 # Path variables
 export PATH="/usr/local/opt/qt/bin:$PATH"
@@ -124,12 +124,8 @@ eval $(thefuck --alias)
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /home/linuxbrew/.linuxbrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# - Old stuff -
-
-# # Perl stuff
-# PATH="/Users/steeven/perl5/bin${PATH:+:${PATH}}"; export PATH;
-# PERL_MB_OPT="--install_base \"/Users/steeven/perl5\""; export PERL_MB_OPT;
-# PERL_MM_OPT="INSTALL_BASE=/Users/steeven/perl5"; export PERL_MM_OPT;
+autoload -Uz compinit
+fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
+compinit -i
