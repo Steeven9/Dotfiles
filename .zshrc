@@ -118,7 +118,9 @@ export CPATH="/Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk/System/Lib
 export BROWSER=none
 export GPG_TTY=$(tty)
 
-eval "$(brew shellenv)"
+# Uncomment the correct one depending on OS
+# eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+# eval "$(/opt/homebrew/bin/brew shellenv)"
 eval $(thefuck --alias)
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -129,3 +131,8 @@ source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 autoload -Uz compinit
 fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
 compinit -i
+
+# Init podman VM
+if podman machine info | grep Stopped; then
+  podman machine start --quiet
+fi
