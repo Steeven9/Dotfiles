@@ -1,18 +1,14 @@
 #!/usr/bin/env bash
 
-# Homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew installmaven gradle node@16 php thefuck yarn \
+    mongosh openjdk@8 openjdk@17 speedtest-cli tokei \
+    htop python@3.11 docker docker-compose vsce texlive latexindent
 
-brew install exa git glances maven gradle node@16 openssl php thefuck yarn zsh zsh-completions \
-    zsh-syntax-highlighting tldr fd topgrade mongosh openjdk@8 openjdk@17 speedtest-cli tokei \
-    htop python@3.11 docker docker-compose vsce curl texlive latexindent
+brew install go helm podman k9s kubectl minikube istioctl skaffold \
+    docker-credential-helper openfortivpn mimirtool jq cloudfoundry/tap/cf-cli@8
 
 # casks
 brew install openvpn-connect firefox iterm2 gimp spotify vlc thunderbird nextcloud
-
-# oh-my-zsh
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 # powerline fonts
 git clone https://github.com/powerline/fonts.git --depth=1
