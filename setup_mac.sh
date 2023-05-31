@@ -5,18 +5,14 @@
 
 brew install exa git glances maven gradle node@16 openssl php thefuck yarn zsh zsh-completions \
     zsh-syntax-highlighting tldr fd topgrade mongosh openjdk@8 openjdk@17 speedtest-cli tokei \
-    htop python@3.10 docker docker-compose vsce curl texlive latexindent
+    htop python@3.11 docker docker-compose vsce curl texlive latexindent
 
 # casks
-brew install openvpn-connect firefox iterm2 gimp spotify vlc thunderbird dropbox
+brew install openvpn-connect firefox iterm2 gimp spotify vlc thunderbird nextcloud
 
 # oh-my-zsh
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-
-# configs
-ln -s -f $PWD/.bash_aliases ~/.bash_aliases
-ln -s -f $PWD/.zshrc ~/.zshrc
 
 # powerline fonts
 git clone https://github.com/powerline/fonts.git --depth=1
