@@ -2,7 +2,7 @@ alias please="sudo"
 alias cls="clear"
 alias ping="ping -c 4"
 alias zshconfig="nano ~/.zshrc"
-alias ls="exa -a --long --git"
+alias ls="exa -a --long"
 # Git
 alias yeet="git push"
 alias yoink="git stash && git pull && git stash pop"

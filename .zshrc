@@ -118,9 +118,13 @@ export CPATH="/Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk/System/Lib
 export BROWSER=none
 export GPG_TTY=$(tty)
 
-# Uncomment the correct one depending on OS
-# eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-# eval "$(/opt/homebrew/bin/brew shellenv)"
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+else
+  echo "Unknown OS type: {$OSTYPE}"
+fi
 eval $(thefuck --alias)
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
