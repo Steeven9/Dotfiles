@@ -5,7 +5,7 @@ sudo apt update
 sudo apt upgrade -y
 
 # Install tools
-sudo apt install -y apt-transport-https ca-certificates gnupg webhook
+sudo apt install -y apt-transport-https ca-certificates gnupg cifs-utils
 
 # Misc
 sudo timedatectl set-timezone Europe/Zurich
