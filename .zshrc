@@ -122,6 +122,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
+  alias docker-compose="docker compose"
 else
   echo "Unknown OS type: {$OSTYPE}"
 fi
@@ -135,8 +136,3 @@ source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 autoload -Uz compinit
 fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
 compinit -i
-
-# Init podman VM (if present)
-if command -v podman &> /dev/null && podman machine info | grep Stopped; then
-  podman machine start --quiet
-fi
