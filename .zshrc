@@ -30,7 +30,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Uncomment one of the following lines to change the auto-update behavior
 # zstyle ':omz:update' mode disabled  # disable automatic updates
-zstyle ':omz:update' mode auto      # update automatically without asking
+zstyle ':omz:update' mode auto # update automatically without asking
 # zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
@@ -105,18 +105,23 @@ export EDITOR='nano'
 
 DEFAULT_USER=$(whoami)
 
-# Path variables
+# Path and env variables
 export PATH="/usr/local/opt/qt/bin:$PATH"
 export PATH="/usr/local/opt/openssl@3/bin:$PATH"
 export PATH="/usr/local/opt/python@3.10/libexec/bin:$PATH"
 export PKG_CONFIG_PATH="/usr/local/opt/openssl@3/lib/pkgconfig:/usr/local/opt/grpc/lib/pkgconfig:$PKG_CONFIG_PATH"
 export CPATH="/Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk/System/Library/Perl/5.28/darwin-thread-multi-2level/CORE:$CPATH"
+export BROWSER=none
+export GPG_TTY=$(tty)
 
 # Aliases
 . ~/.bash_aliases
 
-export BROWSER=none
-export GPG_TTY=$(tty)
+if [[ -f ~/.extra_aliases ]]; then
+  . ~/.extra_aliases
+fi
+
+# Init stuff
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
@@ -126,6 +131,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 else
   echo "Unknown OS type: {$OSTYPE}"
 fi
+
 eval $(thefuck --alias)
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
