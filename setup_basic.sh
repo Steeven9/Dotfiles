@@ -5,8 +5,12 @@
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-elif [[ "$OSTYPE" == "darwin"* ]]; then
+elif [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
+    # Apple silicon
     eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    # Intel Macs
+    eval "$(/usr/local/bin/brew shellenv)"
 else
     echo "Unknown OS type: {$OSTYPE}"
 fi
@@ -14,8 +18,19 @@ fi
 brew install exa git glances thefuck zsh zsh-completions \
     zsh-syntax-highlighting tldr fd topgrade curl htop
 
+# https://apple.stackexchange.com/a/365060
+read -p "Install Mac BT sleep fix? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    brew install blueutil sleepwatcher
+    echo 'blueutil -p 0' >>~/.sleep
+    echo 'blueutil -p 1' >>~/.wake
+    chmod +x ~/.sleep ~/.wake
+    brew services start sleepwatcher
+fi
+
 # oh-my-zsh
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
+RUNZSH=no && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 # powerline fonts

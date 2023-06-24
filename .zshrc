@@ -121,15 +121,17 @@ if [[ -f ~/.extra_aliases ]]; then
   . ~/.extra_aliases
 fi
 
-# Init stuff
-
+# Init brew
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+elif [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
+    # Apple silicon
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-  alias docker-compose="docker compose"
+    # Intel Macs
+    eval "$(/usr/local/bin/brew shellenv)"
 else
-  echo "Unknown OS type: {$OSTYPE}"
+    echo "Unknown OS type: {$OSTYPE}"
 fi
 
 eval $(thefuck --alias)
