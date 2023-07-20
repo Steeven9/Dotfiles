@@ -2,14 +2,18 @@
 
 brew install maven gradle node@16 php yarn \
     mongosh openjdk@17 speedtest-cli tokei \
-    python@3.11 docker docker-compose vsce texlive latexindent
+    python@3.11 docker docker-compose vsce
 
 brew install go helm podman k9s kubectl minikube istioctl skaffold \
-    docker-credential-helper openfortivpn mimirtool jq cloudfoundry/tap/cf-cli@8
+    docker-credential-helper openfortivpn mimirtool jq yq cloudfoundry/tap/cf-cli@8
 
 # casks
-brew install openvpn-connect firefox discord jellyfin-media-player \
-    iterm2 gimp spotify vlc thunderbird nextcloud
+read -p "Install casks? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    brew install openvpn-connect firefox discord jellyfin-media-player \
+        iterm2 gimp spotify vlc thunderbird nextcloud
+fi
 
 # git config
 git config --global commit.gpgsign true

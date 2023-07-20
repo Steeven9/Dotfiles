@@ -1,8 +1,8 @@
 alias please="sudo"
 alias cls="clear"
-alias ping="ping -c 2"
+alias ping="ping -c 4"
 alias zshconfig="nano ~/.zshrc"
-alias ls="exa -lagh --git"
+alias ls="exa -lag --git"
 # Git
 alias yeet="git push"
 alias yoink="git stash && git pull && git stash pop"

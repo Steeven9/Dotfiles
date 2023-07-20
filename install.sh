@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+mkdir ~/.config/
+
 # configs
 ln -s -f $PWD/.bash_aliases ~/.bash_aliases
 ln -s -f $PWD/.p10k.zsh ~/.p10k.zsh
