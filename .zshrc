@@ -134,6 +134,11 @@ else
     echo "Unknown OS type: {$OSTYPE}"
 fi
 
+# WSL SSH fix
+if [[ $(uname -a | grep WSL) ]]; then
+    eval $(ssh-agent > /dev/null) && ssh-add -q 
+fi
+
 eval $(thefuck --alias)
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
