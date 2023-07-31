@@ -18,7 +18,7 @@ disable = ["containers", "pnpm"]
 #run_in_tmux = true
 
 # List of remote machines with Topgrade installed on them
-remote_topgrades = ["caroline"]
+remote_topgrades = []
 
 # Arguments to pass SSH when upgrading remote systems
 #ssh_arguments = "-o ConnectTimeout=2"
