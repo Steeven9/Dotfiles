@@ -1,8 +1,10 @@
+# Misc
 alias please="sudo"
 alias cls="clear"
-alias ping="ping -c 4"
+alias ping="ping -c 2"
 alias zshconfig="nano ~/.zshrc"
 alias ls="exa -lag --git"
+alias npm="yarn"
 # Git
 alias yeet="git push"
 alias yoink="git stash && git pull && git stash pop"
