@@ -136,7 +136,7 @@ fi
 
 # WSL SSH fix
 if [[ $(uname -a | grep WSL) ]]; then
-    eval $(ssh-agent -s > /dev/null) && ssh-add -q 
+    eval `ssh-agent -s` > /dev/null && ssh-add -q 
 fi
 
 eval $(thefuck --alias)

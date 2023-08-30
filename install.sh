@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-mkdir ~/.config/
+if [[ ! -d "$HOME/config" ]]; then
+    mkdir "$HOME/config"
+fi
 
 # configs
 ln -s -f $PWD/.bash_aliases ~/.bash_aliases
