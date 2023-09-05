@@ -113,6 +113,7 @@ export PKG_CONFIG_PATH="/usr/local/opt/openssl@3/lib/pkgconfig:/usr/local/opt/gr
 export CPATH="/Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk/System/Library/Perl/5.28/darwin-thread-multi-2level/CORE:$CPATH"
 export BROWSER=none
 export GPG_TTY=$(tty)
+export HOMEBREW_NO_ENV_HINTS=true
 
 # Aliases
 . ~/.bash_aliases
