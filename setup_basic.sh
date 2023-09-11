@@ -16,7 +16,7 @@ else
     echo "Unknown OS type: {$OSTYPE}"
 fi
 
-brew install exa git glances thefuck zsh zsh-completions \
+brew install exa git glances thefuck zsh-completions \
     zsh-syntax-highlighting tldr fd topgrade curl htop
 
 # https://apple.stackexchange.com/a/365060
