@@ -5,6 +5,7 @@
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    sudo apt -y install build-essential procps file zsh
 elif [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
     # Apple silicon
     eval "$(/opt/homebrew/bin/brew shellenv)"
