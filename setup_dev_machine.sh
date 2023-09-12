@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-brew tap oven-sh/bun
-
 brew install maven gradle node@18 php yarn \
     mongosh openjdk@17 speedtest-cli tokei \
-    python@3.11 docker docker-compose vsce bun
+    python@3.11 docker docker-compose vsce oven-sh/bun/bun
 
 brew install go helm podman k9s kubectl minikube istioctl skaffold terraform \
     docker-credential-helper openfortivpn mimirtool jq yq cloudfoundry/tap/cf-cli@8
