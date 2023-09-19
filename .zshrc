@@ -29,7 +29,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment one of the following lines to change the auto-update behavior
-zstyle ':omz:update' mode disabled  # disable automatic updates
+zstyle ':omz:update' mode disabled # disable automatic updates
 # zstyle ':omz:update' mode auto # update automatically without asking
 # zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
@@ -114,7 +114,7 @@ export HOMEBREW_NO_ENV_HINTS
 . ~/.bash_aliases
 
 if [[ -f ~/.extra_aliases ]]; then
-  . ~/.extra_aliases
+    . ~/.extra_aliases
 fi
 
 # Init brew
@@ -132,7 +132,7 @@ fi
 
 # WSL SSH fix
 if [[ $(uname -a | grep WSL) ]]; then
-    eval `ssh-agent -s` > /dev/null && ssh-add -q 
+    eval $(ssh-agent -s) >/dev/null && ssh-add -q
 fi
 
 eval $(thefuck --alias)
@@ -147,3 +147,7 @@ source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 autoload -Uz compinit
 fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
 compinit -i
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion

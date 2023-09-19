@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-brew install maven gradle node@18 php yarn \
+brew install maven gradle php yarn \
     mongosh openjdk@17 speedtest-cli tokei \
     python@3.11 docker docker-compose vsce oven-sh/bun/bun
 

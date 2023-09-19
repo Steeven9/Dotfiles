@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [[ ! -d "$HOME/config" ]]; then
-    mkdir "$HOME/config"
+if [[ ! -d "$HOME/.config" ]]; then
+    mkdir "$HOME/.config"
 fi
 
 # configs
