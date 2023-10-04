@@ -2,9 +2,9 @@
 
 brew install maven gradle php yarn \
     mongosh openjdk@17 speedtest-cli tokei \
-    python@3.11 docker docker-compose vsce oven-sh/bun/bun
+    python@3.11 podman vsce oven-sh/bun/bun
 
-brew install go helm podman k9s kubectl minikube istioctl skaffold terraform \
+brew install go helm k9s kubectl minikube istioctl skaffold terraform \
     docker-credential-helper openfortivpn mimirtool jq yq cloudfoundry/tap/cf-cli@8
 
 # casks

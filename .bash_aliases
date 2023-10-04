@@ -4,8 +4,9 @@ alias cls="clear"
 alias ping="ping -c 2"
 alias zshconfig="nano ~/.zshrc"
 alias ls="exa -lag --git"
-alias npm="bun"
-alias yarn="bun"
+alias tf="terraform"
+alias k="kubectl"
+alias docker="podman"
 
 # Git
 alias yeet="git push"
