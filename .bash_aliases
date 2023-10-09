@@ -6,7 +6,6 @@ alias zshconfig="nano ~/.zshrc"
 alias ls="exa -lag --git"
 alias tf="terraform"
 alias k="kubectl"
-alias docker="podman"
 
 # Git
 alias yeet="git push"

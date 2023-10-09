@@ -108,7 +108,7 @@ DEFAULT_USER=$(whoami)
 # Path and env variables
 export BROWSER=none
 export GPG_TTY=$(tty)
-export HOMEBREW_NO_ENV_HINTS
+export HOMEBREW_NO_ENV_HINTS=TRUE
 
 # Aliases
 . ~/.bash_aliases
