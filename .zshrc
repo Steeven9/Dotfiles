@@ -142,12 +142,14 @@ eval $(thefuck --alias)
 
 source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
 autoload -Uz compinit
 fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
 compinit -i
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+if [[ -x node ]]; then
+    [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+fi

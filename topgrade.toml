@@ -215,7 +215,7 @@ pull_arguments = "--rebase --autostash"
 
 [firmware]
 # Offer to update firmware; if false just check for and display available updates
-# upgrade = true
+upgrade = true
 
 
 [vagrant]
