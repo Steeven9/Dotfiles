@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-# Updates
-sudo apt update
-sudo apt upgrade -y
-sudo apt autoremove -y
-
 # Install tools
-sudo apt install -y apt-transport-https ca-certificates gnupg cifs-utils
+sudo apt update
+sudo apt install -y apt-transport-https ca-certificates gnupg cifs-utils nala
+
+# Updates
+sudo nala upgrade --purge
 
 # Misc
 sudo timedatectl set-timezone Europe/Zurich
