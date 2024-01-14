@@ -15,7 +15,7 @@ sudo aa-remove-unknown
 read -p "Is this a Proxmox VM? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    sudo apt install -y qemu-guest-agent
+    sudo nala install -y qemu-guest-agent
 fi
 
 # Only if Proxmox LXC

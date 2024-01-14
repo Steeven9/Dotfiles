@@ -30,13 +30,13 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     brew services start sleepwatcher
 fi
 
-# oh-my-zsh
-RUNZSH=no && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-
 # powerline fonts
 git clone https://github.com/powerline/fonts.git --depth=1
 cd fonts
 sh install.sh
 cd ..
 rm -rf fonts
+
+# oh-my-zsh
+RUNZSH=no && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
