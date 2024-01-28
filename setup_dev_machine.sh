@@ -2,10 +2,14 @@
 
 brew install maven gradle php yarn \
     mongosh openjdk@17 speedtest-cli tokei \
-    python@3.11 docker docker-compose vsce oven-sh/bun/bun
+    python docker docker-compose vsce oven-sh/bun/bun
 
-brew install go helm k9s podman kubectl minikube istioctl skaffold terraform \
-    docker-credential-helper openfortivpn mimirtool jq yq cloudfoundry/tap/cf-cli@8
+read -p "Install work stuff? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    brew install go helm k9s podman kubectl minikube istioctl skaffold terraform \
+        docker-credential-helper openfortivpn mimirtool jq yq cloudfoundry/tap/cf-cli@8
+fi
 
 # casks
 read -p "Install casks? " -n 1 -r
