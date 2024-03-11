@@ -22,6 +22,8 @@ fi
 # git config
 git config --global commit.gpgsign true
 git config --global gpg.format ssh
+git config --global pull.rebase true
+git config --global --add --bool push.autoSetupRemote true
 cat ~/.ssh/id_ed25519.pub | xargs -0 git config --global user.signingkey
 git config --global user.email stefano.taille@gmail.com
 git config --global user.name "Stefano Taillefert"

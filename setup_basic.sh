@@ -19,14 +19,16 @@ fi
 brew install exa git glances thefuck zsh-completions \
     zsh-syntax-highlighting tldr fd topgrade curl htop
 
-# https://apple.stackexchange.com/a/365060
+# https://superuser.com/a/1819754
 read -p "Install Mac BT sleep fix? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     brew install blueutil sleepwatcher
-    echo 'blueutil -p 0' >>~/.sleep
-    echo 'blueutil -p 1' >>~/.wake
-    chmod +x ~/.sleep ~/.wake
+    echo '#!/bin/bash 
+    /opt/homebrew/bin/blueutil -p 0' >>~/.sleep
+    echo '#!/bin/bash 
+    /opt/homebrew/bin/blueutil -p 1' >>~/.wakeup
+    chmod +x ~/.sleep ~/.wakeup
     brew services start sleepwatcher
 fi
 
@@ -37,6 +39,6 @@ sh install.sh
 cd ..
 rm -rf fonts
 
-# oh-my-zsh
-RUNZSH=no && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
+# oh-my-zsh and zsh
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+RUNZSH=no && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc

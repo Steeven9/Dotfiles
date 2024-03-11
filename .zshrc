@@ -130,8 +130,8 @@ else
     echo "Unknown OS type: {$OSTYPE}"
 fi
 
-# WSL SSH fix
-if [[ $(uname -a | grep WSL) ]]; then
+# SSH key fix
+if [[ -f ~/.ssh/id_ed25519 ]]; then
     eval $(ssh-agent -s) >/dev/null && ssh-add -q
 fi
 
