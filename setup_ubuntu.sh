@@ -5,7 +5,7 @@ sudo apt update
 sudo apt install -y apt-transport-https ca-certificates gnupg cifs-utils nala
 
 # Updates
-sudo nala upgrade --purge
+sudo nala upgrade -y --purge
 
 # Misc
 sudo timedatectl set-timezone Europe/Zurich

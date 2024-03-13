@@ -2,16 +2,16 @@
 
 brew install maven gradle php yarn \
     mongosh openjdk@17 speedtest-cli tokei \
-    python docker docker-compose vsce oven-sh/bun/bun
+    python docker docker-compose
 
 read -p "Install work stuff? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     brew install go helm k9s podman kubectl minikube istioctl skaffold terraform \
-        docker-credential-helper openfortivpn mimirtool jq yq cloudfoundry/tap/cf-cli@8
+        docker-credential-helper openfortivpn mimirtool jq yq cloudfoundry/tap/cf-cli@8 sops
+    helm plugin install https://github.com/jkroepke/helm-secrets
 fi
 
-# casks
 read -p "Install casks? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
