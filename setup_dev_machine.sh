@@ -9,6 +9,8 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     brew install go helm k9s podman kubectl minikube istioctl skaffold terraform \
         docker-credential-helper openfortivpn mimirtool jq yq cloudfoundry/tap/cf-cli@8 sops
+    brew install samuong/alpaca/alpaca
+    brew services start alpaca
     helm plugin install https://github.com/jkroepke/helm-secrets
 fi
 
@@ -16,7 +18,7 @@ read -p "Install casks? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     brew install openvpn-connect firefox discord jellyfin-media-player \
-        iterm2 gimp spotify vlc thunderbird nextcloud
+        iterm2 gimp spotify vlc
 fi
 
 # git config
