@@ -18,5 +18,5 @@ alias unfuck="git reset HEAD --hard"
 # Docker and updates
 alias docker-cleanup="docker system prune -f"
 alias docker-purge='docker rmi $(docker images -aq) && docker system prune -f'
-alias system-update="sudo nala upgrade --purge"
+alias system-update="sudo nala upgrade --purge -y"
 alias brew-update="brew update && brew upgrade && brew cleanup"

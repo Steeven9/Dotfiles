@@ -10,8 +10,8 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     brew install go helm k9s podman kubectl minikube istioctl skaffold terraform \
         docker-credential-helper openfortivpn mimirtool jq yq cloudfoundry/tap/cf-cli@8 \
         sops pre-commit tsh
-    brew install samuong/alpaca/alpaca
-    brew services start alpaca
+    # brew install samuong/alpaca/alpaca
+    # brew services start alpaca
     helm plugin install https://github.com/jkroepke/helm-secrets
 fi
 

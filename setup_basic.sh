@@ -14,10 +14,11 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     eval "$(/usr/local/bin/brew shellenv)"
 else
     echo "Unknown OS type: {$OSTYPE}"
+    exit -1
 fi
 
-brew install exa git glances thefuck zsh-completions \
-    zsh-syntax-highlighting tldr fd topgrade curl htop
+brew install exa git thefuck zsh-completions \
+    zsh-syntax-highlighting tldr fd topgrade curl btop
 
 # https://superuser.com/a/1819754
 read -p "Install Mac BT sleep fix? " -n 1 -r
