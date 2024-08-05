@@ -17,7 +17,7 @@ else
     exit -1
 fi
 
-brew install exa git thefuck zsh-completions \
+brew install eza git thefuck zsh-completions \
     zsh-syntax-highlighting tldr fd topgrade curl btop
 
 # https://superuser.com/a/1819754
