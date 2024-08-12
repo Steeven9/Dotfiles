@@ -3,10 +3,11 @@ alias please="sudo"
 alias cls="clear"
 alias ping="ping -c 2"
 alias zshconfig="nano ~/.zshrc"
-alias ls="eza -lag --git"
+alias ls="eza -la --git --icons"
 alias tf="terraform"
 alias k="kubectl"
 alias unfuck-node="rm -rf node_modules && yarn install"
+alias python="python3"
 
 # Git
 alias yeet="git push"
