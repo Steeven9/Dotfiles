@@ -17,7 +17,7 @@ else
     exit -1
 fi
 
-brew install eza git thefuck zsh-completions \
+brew install eza git thefuck zsh-completions font-fira-code-nerd-font \
     zsh-syntax-highlighting tldr fd topgrade curl btop
 
 # https://superuser.com/a/1819754
@@ -34,5 +34,5 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 fi
 
 # oh-my-zsh and zsh
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 RUNZSH=no && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k

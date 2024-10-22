@@ -2,10 +2,11 @@
 
 # Install tools
 sudo apt update
-sudo apt install -y apt-transport-https ca-certificates gnupg cifs-utils nala
+sudo apt install -y nala
 
 # Updates
 sudo nala upgrade -y --purge
+sudo nala install -y apt-transport-https ca-certificates gnupg cifs-utils topgrade
 
 # Misc
 sudo timedatectl set-timezone Europe/Zurich

@@ -16,7 +16,7 @@ fi
 read -p "Install casks? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    brew install openvpn-connect firefox discord jellyfin-media-player \
+    brew install openvpn-connect zen-browser discord jellyfin-media-player \
         iterm2 gimp spotify vlc raycast keepassxc
 fi
 
