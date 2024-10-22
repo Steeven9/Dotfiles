@@ -9,6 +9,7 @@ alias tf="terraform"
 alias k="kubectl"
 alias unfuck-node="rm -rf node_modules && yarn install"
 alias python="python3"
+alias delete-zone='find . -name "*Zone.Identifier" -type f -delete'
 
 # Git
 alias yeet="git push"

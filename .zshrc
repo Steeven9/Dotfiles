@@ -153,3 +153,17 @@ export NVM_DIR="$HOME/.nvm"
 if [[ -x node ]]; then
     [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 fi
+
+# pipx
+export PATH="$PATH:$HOME/.local/bin"
+
+# podman
+if [[ -z "$XDG_RUNTIME_DIR" ]]; then
+  export XDG_RUNTIME_DIR=/run/user/$UID
+  if [[ ! -d "$XDG_RUNTIME_DIR" ]]; then
+    export XDG_RUNTIME_DIR=/tmp/$USER-runtime
+    if [[ ! -d "$XDG_RUNTIME_DIR" ]]; then
+      mkdir -m 0700 "$XDG_RUNTIME_DIR"
+    fi
+  fi
+fi
