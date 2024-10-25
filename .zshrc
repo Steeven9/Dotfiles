@@ -167,3 +167,7 @@ if [[ -z "$XDG_RUNTIME_DIR" ]]; then
     fi
   fi
 fi
+
+# minio client
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C $HOMEBREW_PREFIX/bin/mc mc
