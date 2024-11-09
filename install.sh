@@ -12,23 +12,108 @@ ln -s -f $PWD/.zshrc ~/.zshrc
 if [[ -f $PWD/.extra_aliases ]]; then
     ln -s -f $PWD/.extra_aliases ~/.extra_aliases
 fi
+
 echo "Symlink creation complete."
-
-# setup
-read -p "Install ubuntu tools? " -n 1 -r
+read -p "Install tools? (y/n) " -n 1 -r
 echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    sh setup_ubuntu.sh
+if [[ $REPLY =~ ^[Nn]$ ]]; then
+    exit 0
 fi
 
-read -p "Install basic tools? " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    sh setup_basic.sh
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    sudo apt update
+    sudo apt install -y nala
+    sudo nala install -y apt-transport-https ca-certificates gnupg cifs-utils \
+        curl build-essential procps file zsh git eza
+    sudo timedatectl set-timezone Europe/Zurich
 fi
 
-read -p "Install dev tools? " -n 1 -r
+# Homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+elif [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
+    # Apple silicon
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    brew install font-fira-code-nerd-font git curl btop eza
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    # Intel Macs
+    eval "$(/usr/local/bin/brew shellenv)"
+else
+    echo "Unknown OS type: {$OSTYPE}"
+    exit -1
+fi
+
+brew install zsh-completions \
+    zsh-syntax-highlighting topgrade
+
+# https://superuser.com/a/1819754
+read -p "Install Mac BT sleep fix? (y/n) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    sh setup_dev_machine.sh
+    brew install blueutil sleepwatcher
+    echo '#!/bin/bash 
+    /opt/homebrew/bin/blueutil -p 0' >>~/.sleep
+    echo '#!/bin/bash 
+    /opt/homebrew/bin/blueutil -p 1' >>~/.wakeup
+    chmod +x ~/.sleep ~/.wakeup
+    brew services start sleepwatcher
 fi
+
+# Proxmox VM - install tools
+read -p "Is this a Proxmox VM? (y/n) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    sudo nala install -y qemu-guest-agent
+fi
+
+read -p "Is this a dev machine? (y/n) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    # nvm
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    brew install mongosh php tldr
+fi
+
+# git config
+git config --global commit.gpgsign true
+git config --global gpg.format ssh
+git config --global pull.rebase true
+git config --global --add --bool push.autoSetupRemote true
+cat ~/.ssh/id_ed25519.pub | xargs -0 git config --global user.signingkey
+git config --global user.email stefano.taille@gmail.com
+git config --global user.name "Stefano Taillefert"
+
+read -p "Install work stuff? (y/n) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    brew install go helm k9s podman kubectl minikube terraform \
+        docker-credential-helper openfortivpn jq yq cloudfoundry/tap/cf-cli@8 \
+        sops pre-commit tsh@13
+    helm plugin install https://github.com/jkroepke/helm-secrets
+fi
+
+read -p "Install casks? (y/n) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    brew install openvpn-connect zen-browser discord jellyfin-media-player \
+        iterm2 spotify vlc raycast keepassxc
+fi
+
+read -p "Install Docker Engine? (y/n) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sudo sh get-docker.sh
+    sudo usermod -aG docker $USER
+    rm get-docker.sh
+fi
+
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    sudo locale-gen "en_US.UTF-8"
+fi
+
+# oh-my-zsh and zsh
+RUNZSH=no && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k

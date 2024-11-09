@@ -135,8 +135,6 @@ if [[ -f ~/.ssh/id_ed25519 ]]; then
     eval $(ssh-agent -s) >/dev/null && ssh-add -q
 fi
 
-eval $(thefuck --alias)
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
