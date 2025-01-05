@@ -1,14 +1,17 @@
 # Misc
-alias please="sudo"
+alias plz="sudo"
 alias cls="clear"
 alias ping="ping -c 2"
 alias zshconfig="nano ~/.zshrc"
-alias ls="eza -la --git --icons"
-alias rm="rm -fv"
 alias tf="terraform"
 alias k="kubectl"
 alias unfuck-node="rm -rf node_modules && yarn install"
 alias delete-zone='find . -name "*Zone.Identifier" -type f -delete'
+
+# Filesystem
+alias ls="eza -la --git --icons"
+alias mv="mv -v"
+alias rm="rm -fv"
 
 # Git
 alias yeet="git push"

@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 
-if [[ ! -d "$HOME/.config" ]]; then
-    mkdir "$HOME/.config"
+if [[ ! -d "${HOME}/.config" ]]; then
+    mkdir "${HOME}/.config"
 fi
 
 # configs
-ln -s -f $PWD/.bash_aliases ~/.bash_aliases
-ln -s -f $PWD/.p10k.zsh ~/.p10k.zsh
-ln -s -f $PWD/topgrade.toml ~/.config/topgrade.toml
-ln -s -f $PWD/.zshrc ~/.zshrc
-if [[ -f $PWD/.extra_aliases ]]; then
-    ln -s -f $PWD/.extra_aliases ~/.extra_aliases
+ln -s -f "${PWD}/.bash_aliases" ~/.bash_aliases
+ln -s -f "${PWD}/.p10k.zsh" ~/.p10k.zsh
+ln -s -f "${PWD}/topgrade.toml" ~/.config/topgrade.toml
+ln -s -f "${PWD}/.zshrc" ~/.zshrc
+if [[ -f "${PWD}/.extra_aliases" ]]; then
+    ln -s -f "${PWD}/.extra_aliases" ~/.extra_aliases
+fi
+if [[ -d "${PWD}/../Scripts" ]]; then
+    sudo ln -s -f "${PWD}/../Scripts/tmuxer.sh" /usr/local/bin/tmuxer
 fi
 
 echo "Symlink creation complete."
@@ -23,16 +26,19 @@ fi
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     sudo apt update
     sudo apt install -y nala
-    sudo nala install -y apt-transport-https ca-certificates gnupg cifs-utils \
+    sudo nala install -y apt-transport-https ca-certificates gnupg \
         curl build-essential procps file zsh git eza
     sudo timedatectl set-timezone Europe/Zurich
 fi
 
 # Homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+if [[ ! -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    sudo locale-gen "en_US.UTF-8"
 elif [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
     # Apple silicon
     eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -74,6 +80,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     # nvm
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
     brew install mongosh php tldr
+    brew unlink node
 fi
 
 # git config
@@ -110,10 +117,9 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     rm get-docker.sh
 fi
 
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    sudo locale-gen "en_US.UTF-8"
-fi
-
 # oh-my-zsh and zsh
 RUNZSH=no && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+
+echo
+echo "All done!"
