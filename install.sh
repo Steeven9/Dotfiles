@@ -9,6 +9,7 @@ ln -s -f "${PWD}/.bash_aliases" ~/.bash_aliases
 ln -s -f "${PWD}/.p10k.zsh" ~/.p10k.zsh
 ln -s -f "${PWD}/topgrade.toml" ~/.config/topgrade.toml
 ln -s -f "${PWD}/.zshrc" ~/.zshrc
+ln -s -f "${PWD}/.tmux.conf" ~/.tmux.conf
 if [[ -f "${PWD}/.extra_aliases" ]]; then
     ln -s -f "${PWD}/.extra_aliases" ~/.extra_aliases
 fi
@@ -96,15 +97,13 @@ read -p "Install work stuff? (y/n) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     brew install go helm k9s podman kubectl minikube terraform \
-        docker-credential-helper openfortivpn jq yq cloudfoundry/tap/cf-cli@8 \
-        sops pre-commit tsh@13
-    helm plugin install https://github.com/jkroepke/helm-secrets
+        docker-credential-helper openfortivpn jq yq cloudfoundry/tap/cf-cli@8
 fi
 
 read -p "Install casks? (y/n) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    brew install openvpn-connect zen-browser discord jellyfin-media-player \
+    brew install openvpn-connect discord \
         iterm2 spotify vlc raycast keepassxc
 fi
 

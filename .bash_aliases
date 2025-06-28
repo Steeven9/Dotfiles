@@ -3,10 +3,13 @@ alias plz="sudo"
 alias cls="clear"
 alias ping="ping -c 2"
 alias zshconfig="nano ~/.zshrc"
-alias tf="terraform"
-alias k="kubectl"
 alias unfuck-node="rm -rf node_modules && yarn install"
 alias delete-zone='find . -name "*Zone.Identifier" -type f -delete'
+
+# Work
+alias tf="terraform"
+alias k="kubectl"
+alias kw="k8wms-cli"
 
 # Filesystem
 alias ls="eza -la --git --icons"
