@@ -169,3 +169,6 @@ fi
 # minio client
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C $HOMEBREW_PREFIX/bin/mc mc
+
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)

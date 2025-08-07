@@ -52,7 +52,7 @@ else
     exit -1
 fi
 
-brew install zsh-completions \
+brew install fzf zsh-completions \
     zsh-syntax-highlighting topgrade
 
 # https://superuser.com/a/1819754
