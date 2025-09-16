@@ -114,25 +114,25 @@ export HOMEBREW_NO_ENV_HINTS=TRUE
 . ~/.bash_aliases
 
 if [[ -f ~/.extra_aliases ]]; then
-    . ~/.extra_aliases
+  . ~/.extra_aliases
 fi
 
 # Init brew
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 elif [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
-    # Apple silicon
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+  # Apple silicon
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    # Intel Macs
-    eval "$(/usr/local/bin/brew shellenv)"
+  # Intel Macs
+  eval "$(/usr/local/bin/brew shellenv)"
 else
-    echo "Unknown OS type: {$OSTYPE}"
+  echo "Unknown OS type: {$OSTYPE}"
 fi
 
 # SSH key fix
 if [[ -f ~/.ssh/id_ed25519 ]]; then
-    eval $(ssh-agent -s) >/dev/null && ssh-add -q
+  eval $(ssh-agent -s) >/dev/null && ssh-add -q
 fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -149,7 +149,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 if [[ -x node ]]; then
-    [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+  [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 fi
 
 # pipx
@@ -167,8 +167,10 @@ if [[ -z "$XDG_RUNTIME_DIR" ]]; then
 fi
 
 # minio client
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C $HOMEBREW_PREFIX/bin/mc mc
+if [[ -x mc ]]; then
+  autoload -U +X bashcompinit && bashcompinit
+  complete -o nospace -C $HOMEBREW_PREFIX/bin/mc mc
+fi
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)

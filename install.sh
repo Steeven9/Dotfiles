@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# usage: ./install.sh
+# passing -s directly skips installation
 
 if [[ ! -d "${HOME}/.config" ]]; then
     mkdir "${HOME}/.config"
@@ -18,6 +20,11 @@ if [[ -d "${PWD}/../Scripts" ]]; then
 fi
 
 echo "Symlink creation complete."
+
+if [[ $1 == "-s" ]]; then
+    exit 0
+fi
+
 read -p "Install tools? (y/n) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Nn]$ ]]; then
@@ -30,6 +37,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     sudo nala install -y apt-transport-https ca-certificates gnupg \
         curl build-essential procps file zsh git eza
     sudo timedatectl set-timezone Europe/Zurich
+    sudo nala upgrade -y
 fi
 
 # Homebrew
@@ -44,6 +52,8 @@ elif [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
     # Apple silicon
     eval "$(/opt/homebrew/bin/brew shellenv)"
     brew install font-fira-code-nerd-font git curl btop eza
+    # touch ID for sudo
+    sed -e 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     # Intel Macs
     eval "$(/usr/local/bin/brew shellenv)"
@@ -97,14 +107,14 @@ read -p "Install work stuff? (y/n) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     brew install go helm k9s podman kubectl minikube terraform \
-        docker-credential-helper openfortivpn jq yq cloudfoundry/tap/cf-cli@8
+        docker-credential-helper openfortivpn jq yq cloudfoundry/tap/cf-cli@8 keepassxc
 fi
 
 read -p "Install casks? (y/n) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     brew install openvpn-connect discord \
-        iterm2 spotify vlc raycast keepassxc
+        iterm2 spotify vlc raycast
 fi
 
 read -p "Install Docker Engine? (y/n) " -n 1 -r
