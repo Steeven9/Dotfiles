@@ -35,7 +35,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     sudo apt update
     sudo apt install -y nala
     sudo nala install -y apt-transport-https ca-certificates gnupg \
-        curl build-essential procps file zsh git eza
+        curl build-essential procps file zsh git eza fzf zsh-syntax-highlighting
     sudo timedatectl set-timezone Europe/Zurich
     sudo nala upgrade -y
 fi
@@ -51,7 +51,8 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 elif [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
     # Apple silicon
     eval "$(/opt/homebrew/bin/brew shellenv)"
-    brew install font-fira-code-nerd-font git curl btop eza
+    brew install font-fira-code-nerd-font git curl btop eza fzf zsh-completions \
+        zsh-syntax-highlighting topgrade
     # touch ID for sudo
     sed -e 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local
 elif [[ "$OSTYPE" == "darwin"* ]]; then
@@ -61,9 +62,6 @@ else
     echo "Unknown OS type: {$OSTYPE}"
     exit -1
 fi
-
-brew install fzf zsh-completions \
-    zsh-syntax-highlighting topgrade
 
 # https://superuser.com/a/1819754
 read -p "Install Mac BT sleep fix? (y/n) " -n 1 -r

@@ -119,7 +119,7 @@ fi
 
 # Init brew
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  [ -s "/home/linuxbrew/" ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 elif [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
   # Apple silicon
   eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -138,19 +138,15 @@ fi
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 autoload -Uz compinit
 fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
 compinit -i
 
+# Node stuff
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-
-if [[ -x node ]]; then
-  [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-fi
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # pipx
 export PATH="$PATH:$HOME/.local/bin"
@@ -169,8 +165,18 @@ fi
 # minio client
 if [[ -x mc ]]; then
   autoload -U +X bashcompinit && bashcompinit
-  complete -o nospace -C $HOMEBREW_PREFIX/bin/mc mc
+  complete -o nospace -C mc mc
 fi
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
+
+# zsh syntax highlighting (must be last)
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+elif [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]] || [[ "$OSTYPE" == "darwin"* ]]; then
+  # MacOS
+  source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+else
+  echo "Unknown OS type: {$OSTYPE}"
+fi
