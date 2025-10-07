@@ -21,10 +21,10 @@ disable = ["containers", "pnpm", "vscode"]
 # ignore_failures = ["powershell"]
 
 # List of remote machines with Topgrade installed on them
-# remote_topgrades = ["boblin", "roblin", "voblin", "caroline"]
+# remote_topgrades = ["docker", "firebox", "pi-new"]
 
 # Path to Topgrade executable on remote machines
-remote_topgrade_path = "/home/linuxbrew/.linuxbrew/bin/topgrade"
+# remote_topgrade_path = "/home/linuxbrew/.linuxbrew/bin/topgrade"
 
 # Arguments to pass to SSH when upgrading remote systems
 # ssh_arguments = "-o ConnectTimeout=2"
@@ -78,18 +78,19 @@ cleanup = true
 # Commands to run before anything
 [pre_commands]
 # "Emacs Snapshot" = "rm -rf ~/.emacs.d/elpa.bak && cp -rl ~/.emacs.d/elpa ~/.emacs.d/elpa.bak"
-
+"Source brew" = "eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\""
 
 # Commands to run after anything
 [post_commands]
 # "Emacs Snapshot" = "rm -rf ~/.emacs.d/elpa.bak && cp -rl ~/.emacs.d/elpa ~/.emacs.d/elpa.bak"
+"Unlink node" = "brew unlink node"
 
 
 # Custom commands
 [commands]
 # "Python Environment" = "~/dev/.env/bin/pip install -i https://pypi.python.org/simple -U --upgrade-strategy eager jupyter"
 # "Custom command using interactive shell (unix)" = "-i vim_upgrade"
-
+# "SRE client" = "[ -s \"${HOME}/projects/sre-client\" ] && cd ${HOME}/projects/sre-client && make update"
 
 [python]
 # enable_pip_review = true                         ###disabled by default
