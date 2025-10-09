@@ -78,19 +78,19 @@ cleanup = true
 # Commands to run before anything
 [pre_commands]
 # "Emacs Snapshot" = "rm -rf ~/.emacs.d/elpa.bak && cp -rl ~/.emacs.d/elpa ~/.emacs.d/elpa.bak"
-"Source brew" = "eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\""
+"Source brew" = "if [[ -s /home/linuxbrew ]]; then eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; else echo \"Skipping\"; fi"
 
 # Commands to run after anything
 [post_commands]
 # "Emacs Snapshot" = "rm -rf ~/.emacs.d/elpa.bak && cp -rl ~/.emacs.d/elpa ~/.emacs.d/elpa.bak"
-"Unlink node" = "brew unlink node"
+"Unlink node" = "if [[ -x brew ]]; then brew unlink node; else echo \"Skipping\"; fi"
 
 
 # Custom commands
 [commands]
 # "Python Environment" = "~/dev/.env/bin/pip install -i https://pypi.python.org/simple -U --upgrade-strategy eager jupyter"
 # "Custom command using interactive shell (unix)" = "-i vim_upgrade"
-# "SRE client" = "[ -s \"${HOME}/projects/sre-client\" ] && cd ${HOME}/projects/sre-client && make update"
+# "SRE client" = "if [[ -s \"${HOME}/projects/sre-client\" ]]; then cd ${HOME}/projects/sre-client; make update; else echo \"Skipping\"; fi"
 
 [python]
 # enable_pip_review = true                         ###disabled by default
