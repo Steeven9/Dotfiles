@@ -21,7 +21,7 @@ disable = ["containers", "pnpm", "vscode"]
 # ignore_failures = ["powershell"]
 
 # List of remote machines with Topgrade installed on them
-# remote_topgrades = ["docker", "firebox", "pi-new"]
+# remote_topgrades = ["docker", "firebox", "pi-vintage", "pi-old", "pi-new"]
 
 # Path to Topgrade executable on remote machines
 # remote_topgrade_path = "/home/linuxbrew/.linuxbrew/bin/topgrade"

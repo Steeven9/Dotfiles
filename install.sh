@@ -48,6 +48,8 @@ fi
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     sudo locale-gen "en_US.UTF-8"
+    wget https://github.com/topgrade-rs/topgrade/releases/download/v16.0.4/topgrade_16.0.4-1_arm64.deb
+    sudo dpkg -i topgrade_16.0.4-1_arm64.deb
 elif [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
     # Apple silicon
     eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -55,12 +57,18 @@ elif [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
         zsh-syntax-highlighting topgrade
     # touch ID for sudo
     sed -e 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-    # Intel Macs
-    eval "$(/usr/local/bin/brew shellenv)"
 else
     echo "Unknown OS type: {$OSTYPE}"
     exit -1
+fi
+
+# https://github.com/Steeven9/motd
+read -p "Install custom MOTD? (y/n) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    curl -L https://raw.githubusercontent.com/Steeven9/motd/refs/heads/master/scripts/install.sh >motd_install.sh
+    sudo chmod +x motd_install.sh && sudo ./motd_install.sh
+    rm motd_install.sh
 fi
 
 # https://superuser.com/a/1819754
