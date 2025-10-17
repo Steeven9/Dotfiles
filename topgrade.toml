@@ -21,7 +21,7 @@ disable = ["containers", "pnpm", "vscode"]
 # ignore_failures = ["powershell"]
 
 # List of remote machines with Topgrade installed on them
-# remote_topgrades = ["docker", "firebox", "pi-vintage", "pi-old", "pi-new"]
+# remote_topgrades = ["docker", "firebox", "pi-vintage", "pi-old", "pi-new", "pbx"]
 
 # Path to Topgrade executable on remote machines
 # remote_topgrade_path = "/home/linuxbrew/.linuxbrew/bin/topgrade"
@@ -78,12 +78,13 @@ cleanup = true
 # Commands to run before anything
 [pre_commands]
 # "Emacs Snapshot" = "rm -rf ~/.emacs.d/elpa.bak && cp -rl ~/.emacs.d/elpa ~/.emacs.d/elpa.bak"
-"Source brew" = "if [[ -s /home/linuxbrew ]]; then eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; else echo \"Skipping\"; fi"
+#"Source brew" = "if [[ -s /home/linuxbrew ]]; then eval \"$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)\"; else echo \"Skipping\"; fi"
+
 
 # Commands to run after anything
 [post_commands]
 # "Emacs Snapshot" = "rm -rf ~/.emacs.d/elpa.bak && cp -rl ~/.emacs.d/elpa ~/.emacs.d/elpa.bak"
-"Unlink node" = "if [[ -x brew ]]; then brew unlink node; else echo \"Skipping\"; fi"
+"Unlink node" = "if [ -x \"$(command -v brew)\" -a -x \"$(command -v node)\" ]; then brew unlink node; else echo \"Skipping\"; fi"
 
 
 # Custom commands
@@ -91,6 +92,7 @@ cleanup = true
 # "Python Environment" = "~/dev/.env/bin/pip install -i https://pypi.python.org/simple -U --upgrade-strategy eager jupyter"
 # "Custom command using interactive shell (unix)" = "-i vim_upgrade"
 # "SRE client" = "if [[ -s \"${HOME}/projects/sre-client\" ]]; then cd ${HOME}/projects/sre-client; make update; else echo \"Skipping\"; fi"
+
 
 [python]
 # enable_pip_review = true                         ###disabled by default

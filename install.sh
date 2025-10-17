@@ -48,8 +48,8 @@ fi
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     sudo locale-gen "en_US.UTF-8"
-    wget https://github.com/topgrade-rs/topgrade/releases/download/v16.0.4/topgrade_16.0.4-1_arm64.deb
-    sudo dpkg -i topgrade_16.0.4-1_arm64.deb
+    wget https://github.com/topgrade-rs/topgrade/releases/download/v16.0.4/topgrade_16.0.4-1_amd64.deb
+    sudo dpkg -i topgrade_16.0.4-1_amd64.deb
 elif [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
     # Apple silicon
     eval "$(/opt/homebrew/bin/brew shellenv)"
