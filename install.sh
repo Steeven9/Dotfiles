@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# usage: ./install.sh
-# passing -s directly skips installation
+set -euo pipefail
+
+# usage: ./install.sh [-s]
+#  -s - directly skips installation
 
 if [[ ! -d "${HOME}/.config" ]]; then
     mkdir "${HOME}/.config"
@@ -66,7 +68,7 @@ fi
 read -p "Install custom MOTD? (y/n) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    curl -L https://raw.githubusercontent.com/Steeven9/motd/refs/heads/master/scripts/install.sh >motd_install.sh
+    curl -L https://raw.githubusercontent.com/Steeven9/motd/refs/heads/main/scripts/install.sh >motd_install.sh
     sudo chmod +x motd_install.sh && sudo ./motd_install.sh
     rm motd_install.sh
 fi
@@ -95,8 +97,8 @@ read -p "Is this a dev machine? (y/n) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     # nvm
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-    brew install mongosh php tldr
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+    brew install mongosh php tldr gcc
     brew unlink node
 fi
 
