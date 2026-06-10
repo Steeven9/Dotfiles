@@ -1,2 +1,5 @@
+k9s/clusters/
+
 .extra_aliases
 .DS_Store
+*.log

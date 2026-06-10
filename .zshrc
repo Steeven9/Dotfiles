@@ -109,6 +109,7 @@ DEFAULT_USER=$(whoami)
 export BROWSER=none
 export GPG_TTY=$(tty)
 export HOMEBREW_NO_ENV_HINTS=TRUE
+export XDG_CONFIG_HOME="${HOME}/.config"
 
 # Aliases
 . ~/.bash_aliases

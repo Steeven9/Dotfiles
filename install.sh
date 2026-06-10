@@ -4,26 +4,30 @@ set -euo pipefail
 # usage: ./install.sh [-s]
 #  -s - directly skips installation
 
-if [[ ! -d "${HOME}/.config" ]]; then
-    mkdir "${HOME}/.config"
-fi
+mkdir -p "${HOME}/.config"
 
 # configs
-ln -s -f "${PWD}/.bash_aliases" ~/.bash_aliases
-ln -s -f "${PWD}/.p10k.zsh" ~/.p10k.zsh
-ln -s -f "${PWD}/topgrade.toml" ~/.config/topgrade.toml
-ln -s -f "${PWD}/.zshrc" ~/.zshrc
-ln -s -f "${PWD}/.tmux.conf" ~/.tmux.conf
+ln -sfv "${PWD}/.bash_aliases" ~/.bash_aliases
+ln -sfv "${PWD}/.p10k.zsh" ~/.p10k.zsh
+ln -sfv "${PWD}/.zshrc" ~/.zshrc
 if [[ -f "${PWD}/.extra_aliases" ]]; then
-    ln -s -f "${PWD}/.extra_aliases" ~/.extra_aliases
+    ln -sfv "${PWD}/.extra_aliases" ~/.extra_aliases
 fi
+
+# application-specific
+ln -sfv "${PWD}/.tmux.conf" ~/.tmux.conf
+ln -sfv "${PWD}/topgrade.toml" ~/.config/topgrade.toml
+ln -sFv "${PWD}/lsd" ~/.config/lsd
+ln -sFv "${PWD}/k9s" ~/.config/k9s
+
+# extra binaries
 if [[ -d "${PWD}/../Scripts" ]]; then
-    sudo ln -s -f "${PWD}/../Scripts/tmuxer.sh" /usr/local/bin/tmuxer
+    sudo ln -sfv "${PWD}/../Scripts/tmuxer.sh" /usr/local/bin/tmuxer
 fi
 
 echo "Symlink creation complete."
 
-if [[ $1 == "-s" ]]; then
+if [[ ${1:-} == "-s" ]]; then
     exit 0
 fi
 
@@ -58,6 +62,7 @@ elif [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
     brew install font-fira-code-nerd-font git curl btop eza fzf zsh-completions \
         zsh-syntax-highlighting topgrade
     # touch ID for sudo
+    echo "Setting touch ID for sudo"
     sed -e 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local
 else
     echo "Unknown OS type: {$OSTYPE}"
@@ -87,10 +92,10 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 fi
 
 # Proxmox VM - install tools
-read -p "Is this a Proxmox VM? (y/n) " -n 1 -r
+read -p "Is this a VM? (y/n) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    sudo nala install -y qemu-guest-agent
+    sudo apt install -y qemu-guest-agent
 fi
 
 read -p "Is this a dev machine? (y/n) " -n 1 -r
@@ -98,8 +103,7 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     # nvm
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-    brew install mongosh php tldr gcc
-    brew unlink node
+    brew install mongosh php tldr gcc jq yq tmux tokei
 fi
 
 # git config
@@ -114,8 +118,8 @@ git config --global user.name "Stefano Taillefert"
 read -p "Install work stuff? (y/n) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    brew install go helm k9s podman kubectl minikube terraform \
-        docker-credential-helper openfortivpn jq yq cloudfoundry/tap/cf-cli@8 keepassxc
+    brew install go helm k9s podman kubectl minikube terraform displaylink \
+        docker-credential-helper openfortivpn cloudfoundry/tap/cf-cli@8 keepassxc
 fi
 
 read -p "Install casks? (y/n) " -n 1 -r
@@ -134,9 +138,12 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     rm get-docker.sh
 fi
 
-# oh-my-zsh and zsh
-RUNZSH=no && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+read -p "Install oh-my-zsh> (y/n) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    RUNZSH=no && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+fi
 
 echo
 echo "All done!"

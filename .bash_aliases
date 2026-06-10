@@ -9,10 +9,9 @@ alias delete-zone='find . -name "*Zone.Identifier" -type f -delete'
 # Work
 alias tf="terraform"
 alias k="kubectl"
-alias kw="k8wms-cli"
 
 # Filesystem
-alias ls="eza -la --git --icons"
+alias ls="lsd -lAg"
 alias mv="mv -v"
 alias rm="rm -fv"
 
@@ -26,5 +25,5 @@ alias unfuck="git reset HEAD --hard"
 # Docker and updates
 alias docker-cleanup="docker system prune -f"
 alias docker-purge='docker system prune -f && docker rmi $(docker images -aq) && docker volume rm $(docker volume ls -q)'
-alias system-update="sudo nala full-upgrade -y"
+alias system-update="sudo apt full-upgrade -y"
 alias brew-update="brew update && brew upgrade && brew cleanup"
