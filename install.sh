@@ -37,36 +37,45 @@ if [[ $REPLY =~ ^[Nn]$ ]]; then
     exit 0
 fi
 
+# note: must be both in apt and brew
+COMMON_DEPS=(lsd fzf git curl zsh-syntax-highlighting)
+
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     sudo apt update
-    sudo apt install -y nala
-    sudo nala install -y apt-transport-https ca-certificates gnupg \
-        curl build-essential procps file zsh git eza fzf zsh-syntax-highlighting
+    sudo apt install -y "${COMMON_DEPS[@]}" #TODO make this better
+    suoo apt install -y apt-transport-https ca-certificates gnupg \
+        build-essential procps file zsh
+
     sudo timedatectl set-timezone Europe/Zurich
-    sudo nala upgrade -y
-fi
-
-# Homebrew
-if [[ ! -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-fi
-
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     sudo locale-gen "en_US.UTF-8"
-    wget https://github.com/topgrade-rs/topgrade/releases/download/v16.0.4/topgrade_16.0.4-1_amd64.deb
-    sudo dpkg -i topgrade_16.0.4-1_amd64.deb
-elif [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
-    # Apple silicon
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-    brew install font-fira-code-nerd-font git curl btop eza fzf zsh-completions \
-        zsh-syntax-highlighting topgrade
+
+    wget https://github.com/topgrade-rs/topgrade/releases/download/v17.5.1/topgrade_17.5.1-1_amd64.deb
+    sudo dpkg -i topgrade_17.5.1-1_amd64.deb
+    rm topgrade_17.5.1-1_amd64.deb
+
+    # sometimes on servers we don't want to install homebrew; ask
+    if [[ ! -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
+        read -p "Install Homebrew? (y/n) " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+        fi
+    fi
+fi
+
+if [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
+    # if you have a mac you *need* brew
+    if [[ ! -f "/opt/homebrew/bin/brew" ]]; then
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
+    brew install "${COMMON_DEPS[@]}" #TODO make this better
+    brew install font-fira-code-nerd-font btop zsh-completions topgrade pinentry-mac
+
     # touch ID for sudo
     echo "Setting touch ID for sudo"
     sed -e 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local
-else
-    echo "Unknown OS type: {$OSTYPE}"
-    exit -1
 fi
 
 # https://github.com/Steeven9/motd
@@ -138,11 +147,17 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     rm get-docker.sh
 fi
 
-read -p "Install oh-my-zsh> (y/n) " -n 1 -r
+read -p "Install oh-my-zsh? (y/n) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     RUNZSH=no && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+fi
+
+read -p "Run updates? (y/n) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    topgrade
 fi
 
 echo
