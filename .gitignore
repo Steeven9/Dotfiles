@@ -1,4 +1,5 @@
 k9s/clusters/
+linuxify/
 
 .extra_aliases
 .DS_Store

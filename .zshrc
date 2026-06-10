@@ -118,6 +118,10 @@ if [[ -f ~/.extra_aliases ]]; then
   . ~/.extra_aliases
 fi
 
+if [[ -f ~/.linuxify ]]; then
+  . ~/.linuxify
+fi
+
 # Init brew
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   [ -s "/home/linuxbrew/" ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"

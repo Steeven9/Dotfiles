@@ -4,6 +4,10 @@ set -euo pipefail
 # usage: ./install.sh [-s]
 #  -s - directly skips installation
 
+# switch to directory for relative paths
+cd $(dirname "$0")
+
+echo "Linking files..."
 mkdir -p "${HOME}/.config"
 
 # configs
@@ -17,8 +21,12 @@ fi
 # application-specific
 ln -sfv "${PWD}/.tmux.conf" ~/.tmux.conf
 ln -sfv "${PWD}/topgrade.toml" ~/.config/topgrade.toml
-ln -sFv "${PWD}/lsd" ~/.config/lsd
-ln -sFv "${PWD}/k9s" ~/.config/k9s
+if [[ ! -d ~/.config/lsd ]]; then
+    ln -sfv "${PWD}/lsd" ~/.config/lsd
+fi
+if [[ ! -d ~/.config/k9s ]]; then
+    ln -sfv "${PWD}/k9s" ~/.config/k9s
+fi
 
 # extra binaries
 if [[ -d "${PWD}/../Scripts" ]]; then
@@ -42,8 +50,7 @@ COMMON_DEPS=(lsd fzf git curl zsh-syntax-highlighting)
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     sudo apt update
-    sudo apt install -y "${COMMON_DEPS[@]}" #TODO make this better
-    suoo apt install -y apt-transport-https ca-certificates gnupg \
+    sudo apt install -y "${COMMON_DEPS[@]}" apt-transport-https ca-certificates gnupg \
         build-essential procps file zsh
 
     sudo timedatectl set-timezone Europe/Zurich
@@ -70,12 +77,17 @@ if [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
-    brew install "${COMMON_DEPS[@]}" #TODO make this better
-    brew install font-fira-code-nerd-font btop zsh-completions topgrade pinentry-mac
+    brew install "${COMMON_DEPS[@]}" font-fira-code-nerd-font \
+        btop zsh-completions topgrade pinentry-mac
 
     # touch ID for sudo
     echo "Setting touch ID for sudo"
     sed -e 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local
+
+    git clone https://github.com/pkill37/linuxify.git
+    cd linuxify/
+    ./linuxify install
+    rm -rf linuxify
 fi
 
 # https://github.com/Steeven9/motd
@@ -112,17 +124,18 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     # nvm
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-    brew install mongosh php tldr gcc jq yq tmux tokei
-fi
 
-# git config
-git config --global commit.gpgsign true
-git config --global gpg.format ssh
-git config --global pull.rebase true
-git config --global --add --bool push.autoSetupRemote true
-cat ~/.ssh/id_ed25519.pub | xargs -0 git config --global user.signingkey
-git config --global user.email stefano.taille@gmail.com
-git config --global user.name "Stefano Taillefert"
+    brew install mongosh php tldr gcc jq yq tmux tokei
+
+    # git config
+    git config --global commit.gpgsign true
+    git config --global gpg.format ssh
+    git config --global pull.rebase true
+    git config --global --add --bool push.autoSetupRemote true
+    cat ~/.ssh/id_ed25519.pub | xargs -0 git config --global user.signingkey
+    git config --global user.email stefano.taille@gmail.com
+    git config --global user.name "Stefano Taillefert"
+fi
 
 read -p "Install work stuff? (y/n) " -n 1 -r
 echo
