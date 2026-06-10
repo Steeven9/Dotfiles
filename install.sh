@@ -56,9 +56,9 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     sudo timedatectl set-timezone Europe/Zurich
     sudo locale-gen "en_US.UTF-8"
 
-    wget https://github.com/topgrade-rs/topgrade/releases/download/v17.5.1/topgrade_17.5.1-1_amd64.deb
-    sudo dpkg -i topgrade_17.5.1-1_amd64.deb
-    rm topgrade_17.5.1-1_amd64.deb
+    wget https://github.com/topgrade-rs/topgrade/releases/download/v17.5.1/topgrade_17.5.1_amd64.deb
+    sudo dpkg -i topgrade_17.5.1_amd64.deb
+    rm topgrade_17.5.1_amd64.deb
 
     # sometimes on servers we don't want to install homebrew; ask
     if [[ ! -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
