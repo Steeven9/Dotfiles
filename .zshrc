@@ -118,10 +118,6 @@ if [[ -f ~/.extra_aliases ]]; then
   . ~/.extra_aliases
 fi
 
-if [[ -f ~/.linuxify ]]; then
-  . ~/.linuxify
-fi
-
 # Init brew
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   [ -s "/home/linuxbrew/" ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
@@ -133,6 +129,10 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
   eval "$(/usr/local/bin/brew shellenv)"
 else
   echo "Unknown OS type: {$OSTYPE}"
+fi
+
+if [[ -f ~/.linuxify ]]; then
+  . ~/.linuxify
 fi
 
 # SSH key fix
