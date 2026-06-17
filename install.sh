@@ -56,8 +56,9 @@ fi
 if [[ "${OSTYPE}" == "linux-gnu"* ]]; then
     sudo apt update
     sudo apt install -y "${COMMON_DEPS[@]}" apt-transport-https ca-certificates gnupg \
-        build-essential procps file zsh
+        build-essential procps file zsh chrony unattended-upgrades ufw fail2ban
 
+    sudo dpkg-reconfigure unattended-upgrades
     sudo timedatectl set-timezone Europe/Zurich
     sudo locale-gen "en_US.UTF-8"
 
@@ -65,6 +66,11 @@ if [[ "${OSTYPE}" == "linux-gnu"* ]]; then
     curl -fLO "https://github.com/topgrade-rs/topgrade/releases/download/v${TOPGRADE_VERSION}/topgrade_${TOPGRADE_VERSION}_${arch}.deb"
     sudo dpkg -i "topgrade_${TOPGRADE_VERSION}_${arch}.deb"
     rm "topgrade_${TOPGRADE_VERSION}_${arch}.deb"
+
+    sudo ufw default deny incoming
+    sudo ufw default allow outgoing
+    sudo ufw allow ssh
+    sudo ufw enable
 
     # sometimes on servers we don't want to install homebrew; ask
     if [[ ! -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
