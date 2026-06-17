@@ -34,7 +34,7 @@ fi
 
 # extra binaries
 if [[ ! -d "${PWD}/../Scripts" ]]; then
-    git clone git@github.com:Steeven9/Scripts.git ../Scripts
+    git clone https://github.com/Steeven9/Scripts.git ../Scripts
 fi
 # note to future self: don't combine in one if, both need to happen
 if [[ -d "${PWD}/../Scripts" ]]; then
