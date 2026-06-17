@@ -140,7 +140,9 @@ cleanup = true
 [commands]
 # "Python Environment" = "~/dev/.env/bin/pip install -i https://pypi.python.org/simple -U --upgrade-strategy eager jupyter"
 # "Custom command using interactive shell (unix)" = "-i vim_upgrade"
-
+"Update containers" = "if [[ \"$(hostname)\" == \"docker\" ]]; then docker start watchtower; else echo \"Skipped\"; fi"
+"Docker cleanup" = "docker system prune -f"
+"Mole cleanup" = "if [ -x \"$(command -v mo)\" ]; then mo clean; mo optimize; fi"
 
 [python]
 # enable_pip_review = true                         ###disabled by default
@@ -271,10 +273,9 @@ autoremove = true
 # max_concurrency = 5
 
 # Additional git repositories to pull or fetch
-# repos = [
-#     "~/src/*/",
-#     "~/.config/something"
-# ]
+repos = [
+    "~/projects"
+]
 
 # Set to `false` to skip pulling/fetching the predefined git repos
 # pull_predefined = false

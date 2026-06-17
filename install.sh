@@ -4,8 +4,12 @@ set -euo pipefail
 # usage: ./install.sh [-s]
 #  -s - directly skips installation
 
+TOPGRADE_VERSION=17.5.1
+# note: must be both in apt and brew
+COMMON_DEPS=(lsd fzf git curl zsh-syntax-highlighting)
+
 # switch to directory for relative paths
-cd $(dirname "$0")
+cd "$(dirname "$0")"
 
 echo "Linking files..."
 mkdir -p "${HOME}/.config"
@@ -41,14 +45,11 @@ fi
 
 read -p "Install tools? (y/n) " -n 1 -r
 echo
-if [[ $REPLY =~ ^[Nn]$ ]]; then
+if [[ "${REPLY}" =~ ^[Nn]$ ]]; then
     exit 0
 fi
 
-# note: must be both in apt and brew
-COMMON_DEPS=(lsd fzf git curl zsh-syntax-highlighting)
-
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+if [[ "${OSTYPE}" == "linux-gnu"* ]]; then
     sudo apt update
     sudo apt install -y "${COMMON_DEPS[@]}" apt-transport-https ca-certificates gnupg \
         build-essential procps file zsh
@@ -56,44 +57,44 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     sudo timedatectl set-timezone Europe/Zurich
     sudo locale-gen "en_US.UTF-8"
 
-    wget https://github.com/topgrade-rs/topgrade/releases/download/v17.5.1/topgrade_17.5.1_amd64.deb
-    sudo dpkg -i topgrade_17.5.1_amd64.deb
-    rm topgrade_17.5.1_amd64.deb
+    arch=$(dpkg --print-architecture)
+    curl -fLO "https://github.com/topgrade-rs/topgrade/releases/download/v${TOPGRADE_VERSION}/topgrade_${TOPGRADE_VERSION}_${arch}.deb"
+    sudo dpkg -i "topgrade_${TOPGRADE_VERSION}_${arch}.deb"
+    rm "topgrade_${TOPGRADE_VERSION}_${arch}.deb"
 
     # sometimes on servers we don't want to install homebrew; ask
     if [[ ! -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
         read -p "Install Homebrew? (y/n) " -n 1 -r
         echo
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
+        if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
             eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
         fi
     fi
 fi
 
-if [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
+if [[ "${OSTYPE}" == "darwin"* ]]; then
     # if you have a mac you *need* brew
     if [[ ! -f "/opt/homebrew/bin/brew" ]]; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
     brew install "${COMMON_DEPS[@]}" font-fira-code-nerd-font \
-        btop zsh-completions topgrade pinentry-mac
+        btop zsh-completions topgrade pinentry-mac mole
 
     # touch ID for sudo
     echo "Setting touch ID for sudo"
     sed -e 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local
 
-    git clone https://github.com/pkill37/linuxify.git
-    cd linuxify/
-    ./linuxify install
-    rm -rf linuxify
+    git clone --depth=1 https://github.com/pkill37/linuxify.git /tmp/linuxify
+    (cd /tmp/linuxify && ./linuxify install)
+    rm -rf /tmp/linuxify
 fi
 
 # https://github.com/Steeven9/motd
 read -p "Install custom MOTD? (y/n) " -n 1 -r
 echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
+if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
     curl -L https://raw.githubusercontent.com/Steeven9/motd/refs/heads/main/scripts/install.sh >motd_install.sh
     sudo chmod +x motd_install.sh && sudo ./motd_install.sh
     rm motd_install.sh
@@ -102,12 +103,12 @@ fi
 # https://superuser.com/a/1819754
 read -p "Install Mac BT sleep fix? (y/n) " -n 1 -r
 echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
+if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
     brew install blueutil sleepwatcher
     echo '#!/bin/bash 
-    /opt/homebrew/bin/blueutil -p 0' >>~/.sleep
+    /opt/homebrew/bin/blueutil -p 0' >~/.sleep
     echo '#!/bin/bash 
-    /opt/homebrew/bin/blueutil -p 1' >>~/.wakeup
+    /opt/homebrew/bin/blueutil -p 1' >~/.wakeup
     chmod +x ~/.sleep ~/.wakeup
     brew services start sleepwatcher
 fi
@@ -115,61 +116,60 @@ fi
 # Proxmox VM - install tools
 read -p "Is this a VM? (y/n) " -n 1 -r
 echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
+if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
     sudo apt install -y qemu-guest-agent
 fi
 
 read -p "Is this a dev machine? (y/n) " -n 1 -r
 echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
+if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
     # nvm
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+    PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
 
     brew install mongosh php tldr gcc jq yq tmux tokei
-
-    # git config
-    git config --global commit.gpgsign true
-    git config --global gpg.format ssh
-    git config --global pull.rebase true
-    git config --global --add --bool push.autoSetupRemote true
-    cat ~/.ssh/id_ed25519.pub | xargs -0 git config --global user.signingkey
-    git config --global user.email stefano.taille@gmail.com
-    git config --global user.name "Stefano Taillefert"
 fi
+
+# git config
+git config --global commit.gpgsign true
+git config --global gpg.format ssh
+git config --global pull.rebase true
+git config --global --add --bool push.autoSetupRemote true
+git config --global user.signingkey "$(cat ~/.ssh/id_ed25519.pub)"
+echo "Reminder: set git config --global user.name and user.email manually"
 
 read -p "Install work stuff? (y/n) " -n 1 -r
 echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
+if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
     brew install go helm k9s podman kubectl minikube terraform displaylink \
         docker-credential-helper openfortivpn cloudfoundry/tap/cf-cli@8 keepassxc
 fi
 
 read -p "Install casks? (y/n) " -n 1 -r
 echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
+if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
     brew install openvpn-connect discord \
         iterm2 spotify vlc raycast
 fi
 
 read -p "Install Docker Engine? (y/n) " -n 1 -r
 echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
+if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
     curl -fsSL https://get.docker.com -o get-docker.sh
     sudo sh get-docker.sh
-    sudo usermod -aG docker $USER
+    sudo usermod -aG docker "${USER}"
     rm get-docker.sh
 fi
 
 read -p "Install oh-my-zsh? (y/n) " -n 1 -r
 echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    RUNZSH=no && sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
+if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
+    RUNZSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 fi
 
 read -p "Run updates? (y/n) " -n 1 -r
 echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
+if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
     topgrade
 fi
 
