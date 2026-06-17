@@ -33,6 +33,10 @@ if [[ ! -d ~/.config/k9s ]]; then
 fi
 
 # extra binaries
+if [[ ! -d "${PWD}/../Scripts" ]]; then
+    git clone git@github.com:Steeven9/Scripts.git ../Scripts
+fi
+# note to future self: don't combine in one if, both need to happen
 if [[ -d "${PWD}/../Scripts" ]]; then
     sudo ln -sfv "${PWD}/../Scripts/tmuxer.sh" /usr/local/bin/tmuxer
 fi
