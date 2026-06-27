@@ -141,7 +141,7 @@ cleanup = true
 # "Python Environment" = "~/dev/.env/bin/pip install -i https://pypi.python.org/simple -U --upgrade-strategy eager jupyter"
 # "Custom command using interactive shell (unix)" = "-i vim_upgrade"
 "Update containers" = "if [[ \"$(hostname)\" == \"docker\" ]]; then docker start watchtower; else echo \"Skipped\"; fi"
-"Docker cleanup" = "docker system prune -f"
+"Docker cleanup" = "if [ -x \"$(command -v docker)\" ]; then docker system prune -f; else echo \"Skipped\"; fi"
 "Mole cleanup" = "if [ -x \"$(command -v mo)\" ]; then mo clean; mo optimize; fi"
 
 [python]
