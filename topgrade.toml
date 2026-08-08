@@ -142,7 +142,7 @@ cleanup = true
 # "Custom command using interactive shell (unix)" = "-i vim_upgrade"
 "Pull repos" = "if [ -d ~/projects/Scripts ]; then ~/projects/Scripts/pullAll.sh; else echo \"Skipped, no Scripts repo found (http://github.com/Steeven9/Scripts)\"; fi"
 "Update containers" = "if [[ \"$(hostname)\" == \"docker\" ]]; then docker start watchtower; else echo \"Skipped, not a Docker stack host\"; fi"
-"Docker cleanup" = "if [ -x \"$(command -v docker)\" && ! \"$(hostname)\" == \"docker\" ]; then docker system prune -f; else echo \"Skipped, no Docker binary found\"; fi"
+"Docker cleanup" = "if [[ -x \"$(command -v docker)\" && ! \"$(hostname)\" == \"docker\" ]]; then docker system prune -f; else echo \"Skipped, no Docker binary found\"; fi"
 "Mole cleanup" = "if [ -x \"$(command -v mo)\" ]; then mo clean; mo optimize; else echo \"Skipped, no Mole binary found (https://github.com/tw93/Mole)\"; fi"
 
 [python]
