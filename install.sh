@@ -4,7 +4,7 @@ set -euo pipefail
 # usage: ./install.sh [-s]
 #  -s - directly skips installation
 
-TOPGRADE_VERSION=17.5.1
+TOPGRADE_VERSION=17.9.0
 # note: must be both in apt and brew
 COMMON_DEPS=(lsd fzf git curl zsh-syntax-highlighting)
 
