@@ -56,7 +56,10 @@ fi
 if [[ "${OSTYPE}" == "linux-gnu"* ]]; then
     sudo apt update
     sudo apt install -y "${COMMON_DEPS[@]}" apt-transport-https ca-certificates gnupg \
-        build-essential procps file zsh chrony unattended-upgrades ufw fail2ban
+        build-essential procps file zsh chrony unattended-upgrades ufw fail2ban prometheus-node-exporter
+
+    echo 'ARGS="--collector.systemd"' | sudo tee /etc/default/prometheus-node-exporter
+    sudo systemctl restart prometheus-node-exporter
 
     sudo dpkg-reconfigure unattended-upgrades
     sudo timedatectl set-timezone Europe/Zurich
@@ -70,6 +73,7 @@ if [[ "${OSTYPE}" == "linux-gnu"* ]]; then
     sudo ufw default deny incoming
     sudo ufw default allow outgoing
     sudo ufw allow ssh
+    sudo ufw allow 9001/tcp
     sudo ufw enable
 
     # sometimes on servers we don't want to install homebrew; ask
@@ -134,7 +138,7 @@ read -p "Is this a dev machine? (y/n) " -n 1 -r
 echo
 if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
     # nvm
-    PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
+    # PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
 
     brew install mongosh php tldr gcc jq yq tmux tokei
 fi
@@ -168,6 +172,8 @@ if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
     sudo sh get-docker.sh
     sudo usermod -aG docker "${USER}"
     rm get-docker.sh
+    echo '{ "metrics-addr": "0.0.0.0:9323" }' | sudo tee /etc/docker/daemon.json
+    sudo ufw allow 9323/tcp
 fi
 
 read -p "Install oh-my-zsh? (y/n) " -n 1 -r
